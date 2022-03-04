@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nassim.Employes.domain.Employe;
+import com.nassim.Employes.domain.Societe;
 import com.nassim.Employes.service.EmployeService;
+import com.nassim.Employes.service.SocieteService;
 
 @RequestMapping("/APIemploye")
 @RestController
 public class EmployeEndpoint {
 	@Autowired(required = false)
 	EmployeService employeService;
+	
+	@Autowired(required = false)
+	SocieteService societeService;
 
 	@GetMapping("/employes")
 	public List<Employe> findAllEmp() {
@@ -35,8 +40,10 @@ public class EmployeEndpoint {
 	public void saveEmploye(
 			@RequestParam(name = "nom") String nom,
 			@RequestParam(name = "prenom") String prenom,
-			@RequestParam(name = "age") Integer age) {
-		Employe emp = new Employe(nom, prenom, age);
+			@RequestParam(name = "age") Integer age,
+			@RequestParam(name = "IdSociete") Integer id) {
+		Societe soc = societeService.findSociete(id);
+		Employe emp = new Employe(nom, prenom, age, soc);
 		employeService.saveEmploye(emp);
 	}
 
@@ -44,9 +51,9 @@ public class EmployeEndpoint {
 	public void updateEmploye(@RequestParam @PathVariable(name = "id") Integer id,
 			@RequestParam(name = "nom") String nom,
 			@RequestParam(name = "prenom") String prenom,
-			@RequestParam(name = "age") Integer age
-			/*@RequestParam(name = "IdSociete")*/) {
-		Employe emp = new Employe(id, nom, prenom, age/*, societe*/);
+			@RequestParam(name = "age") Integer age,
+			@RequestParam(name = "IdSociete") Societe societe) {
+		Employe emp = new Employe(id, nom, prenom, age, societe);
 		employeService.updateEmploye(id, emp);
 	}
 

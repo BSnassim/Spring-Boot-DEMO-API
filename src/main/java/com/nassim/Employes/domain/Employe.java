@@ -2,6 +2,7 @@ package com.nassim.Employes.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,15 +30,16 @@ public class Employe implements Serializable {
 	private String nom;
 	private String prenom;
 	private Integer age;
-	/*@ManyToOne()
-	@JoinColumn(name="id")
-	private Societe societe;*/
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="societe_id", referencedColumnName = "id")
+	private Societe societe;
 	
-	public Employe(String nom, String prenom, Integer age) {
+	public Employe(String nom, String prenom, Integer age, Societe societe) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.age = age;
+		this.societe = societe;
 	}
 	
 	
